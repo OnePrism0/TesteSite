@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KhanTool - Instalar</title>
-    <link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/1330054265435062314/1403871462108037191/logo.png?ex=689920af&is=6897cf2f&hm=b366bf7f2315053cb602a55c50c95fb532ac69ac920759a7d136806cba94057b&">
     <link rel="stylesheet" href="media/login_khan.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -77,7 +76,7 @@
                 <div class="bookmarklet-code" id="bookmarkletCode">javascript:fetch("https://raw.githubusercontent.com/OnePrism0/KhanToolSite/refs/heads/main/js/KhanTool.js").then(t=>t.text()).then(eval);</div>
                 <div class="bookmarklet-buttons">
                     <button class="bookmark-button copy-button" onclick="copyBookmarklet()">Copiar Código</button>
-                    <a href='javascript:fetch("https://raw.githubusercontent.com/OnePrism0/KhanToolSite/refs/heads/main/js/KhanTool.js").then(t=>t.text()).then(eval);'
+                    <a href='javascript:fetch("https://raw.githubusercontent.com/OnePrism0/KhanTool/refs/heads/main/KhanTool.js").then(t=>t.text()).then(eval);'
                        class="bookmark-button" id="dragBookmarklet" draggable="true">
                         Arrastar para Favoritos
                     </a>
@@ -147,7 +146,7 @@
             <div class="help-section">
                 <h3>Precisa de ajuda?</h3>
                 <p>Se tiver dúvidas durante a instalação ou uso do KhanTool, nossa comunidade está pronta para ajudar.</p>
-                <a href="https://discord.gg/H49aDvsTBd" class="discord-link">
+                <a href="https://discord.gg/tdy2jCWja2" class="discord-link">
                     <img src="discord.png" alt="Discord" />
                     Entrar no Discord
                 </a>
@@ -155,10 +154,20 @@
         </div>
     </div>
     <footer class="footer">
-        feito por <a href="https://discord.gg/H49aDvsTBd" target="_blank">! foquisi</a>
+        feito por <a href="https://discord.gg/cbeK2exF5U" target="_blank">! foquisi</a>
     </footer>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const isVerified = localStorage.getItem('discord_verified');
+            const verificationTime = localStorage.getItem('verification_time');
+            
+            const isExpired = verificationTime && (Date.now() - parseInt(verificationTime)) > 24 * 60 * 60 * 1000;
+            
+            if (!isVerified || isExpired) {
+                window.location.href = 'auth.html?error=token_expired';
+                return;
+            }
+            
             document.querySelectorAll('.fade-in').forEach(el=>el.style.opacity=1);
             document.addEventListener('selectstart', function(e){
                 if(!e.target.closest('.bookmarklet-code')){e.preventDefault();return false;}
@@ -170,9 +179,11 @@
             });
             document.addEventListener('contextmenu', e=>{e.preventDefault();return false;});
         });
+        
         function copyBookmarklet() {
             copyToClipboard('bookmarkletCode');
         }
+        
         function copyToClipboard(elementId) {
             const codeElement = document.getElementById(elementId);
             const text = codeElement.textContent;
@@ -190,6 +201,7 @@
                 showToast('Código copiado!');
             });
         }
+        
         function showToast(message) {
             const toast = document.createElement('div');
             toast.style.cssText = "position: fixed;top: 20px;right: 20px;background: var(--primary);color: white;padding: 1rem 1.5rem;border-radius: 8px;z-index: 9999;box-shadow: 0 4px 12px rgba(0,0,0,0.15);font-weight: 500;opacity: 0;transform: translateX(100px);transition: all 0.3s ease;";
